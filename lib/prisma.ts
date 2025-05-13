@@ -1,6 +1,12 @@
-import { PrismaClient } from "@prisma/client/extension";
+import { PrismaClient } from "@/app/generated/prisma";
+import { withAccelerate } from "@prisma/extension-accelerate";
+// import { withOptimize } from "@prisma/extension-optimize";
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient().$extends(
+//   withOptimize({ apiKey: process.env.OPTIMIZE_API_KEY as string })
+// );
+
+const prisma = new PrismaClient().$extends(withAccelerate());
 
 const globalForPrisma = global as unknown as { prisma: typeof prisma };
 

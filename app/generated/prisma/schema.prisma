@@ -10,8 +10,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+  provider  = "mongodb"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
 }
 
 model User {
@@ -46,3 +47,36 @@ model Comment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// model User {
+//   id        String   @id @default(uuid()) @db.Uuid
+//   email     String   @unique
+//   name      String?
+//   posts     Post[]
+//   comments  Comment[]
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+
+// model Post {
+//   id        String   @id @default(uuid()) @db.Uuid
+//   title     String
+//   content   String?
+//   published Boolean  @default(false)
+//   authorId  String   @db.Uuid
+//   author    User     @relation(fields: [authorId], references: [id])
+//   comments  Comment[]
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+
+// model Comment {
+//   id        String   @id @default(uuid()) @db.Uuid
+//   content   String
+//   postId    String   @db.Uuid
+//   post      Post     @relation(fields: [postId], references: [id])
+//   authorId  String   @db.Uuid
+//   author    User     @relation(fields: [authorId], references: [id])
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }

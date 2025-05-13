@@ -17,6 +17,10 @@ export async function getUsers() {
       orderBy: {
         createdAt: "desc",
       },
+      cacheStrategy: {
+        ttl: 60, // cache is fresh for 60 seconds
+        tags: ["users_list"], // tag for cache revalidation
+      },
     });
 
     return users;
@@ -48,6 +52,10 @@ export const getPosts = async (limit = 5) => {
         createdAt: "desc",
       },
       take: limit,
+      cacheStrategy: {
+        swr: 120, // serve stale data for up to 120 while revalidating
+        tags: ["posts_list"], // tag for cache revalidation
+      },
     });
 
     return posts;
@@ -76,6 +84,11 @@ export async function getUserById(id: string) {
         _count: {
           select: { comments: true, posts: true },
         },
+      },
+      cacheStrategy: {
+        ttl: 30, // fresh for 30 seconds
+        swr: 60, // then stale but acceptable for more 60 seconds
+        tags: [`user_${id}`], // user specific tag
       },
     });
 
@@ -224,6 +237,11 @@ export async function createComment({
 
     // Revalidate the home page to show the new comment
     revalidatePath("/");
+
+    // revalidate
+    await prisma.$accelerate.invalidate({
+      tags: ["posts_list", `user_${authorId}`],
+    });
 
     return comment;
   } catch (error) {

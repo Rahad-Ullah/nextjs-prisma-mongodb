@@ -157,7 +157,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
@@ -167,17 +167,18 @@ const config = {
     "db"
   ],
   "activeProvider": "mongodb",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "mongodb+srv://gen-z:genz1234@cluster0.zku3u3r.mongodb.net/nextjsWithPrismaMongodb?retryWrites=true&w=majority&appName=Cluster0"
+        "value": null
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../app/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"mongodb\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id        String    @id @default(auto()) @map(\"_id\") @db.ObjectId\n  email     String    @unique\n  name      String?\n  posts     Post[]\n  comments  Comment[]\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n}\n\nmodel Post {\n  id        String    @id @default(auto()) @map(\"_id\") @db.ObjectId\n  title     String\n  content   String?\n  published Boolean   @default(false)\n  authorId  String    @db.ObjectId\n  author    User      @relation(fields: [authorId], references: [id])\n  comments  Comment[]\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n}\n\nmodel Comment {\n  id        String   @id @default(auto()) @map(\"_id\") @db.ObjectId\n  content   String\n  postId    String   @db.ObjectId\n  post      Post     @relation(fields: [postId], references: [id])\n  authorId  String   @db.ObjectId\n  author    User     @relation(fields: [authorId], references: [id])\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n",
-  "inlineSchemaHash": "6e0161ccedfdd49bb5a0283b2f6375bb2561ab5002e31dd3f86cc28d2d75efb3",
-  "copyEngine": true
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../app/generated/prisma\"\n}\n\ndatasource db {\n  provider  = \"mongodb\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_DATABASE_URL\")\n}\n\nmodel User {\n  id        String    @id @default(auto()) @map(\"_id\") @db.ObjectId\n  email     String    @unique\n  name      String?\n  posts     Post[]\n  comments  Comment[]\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n}\n\nmodel Post {\n  id        String    @id @default(auto()) @map(\"_id\") @db.ObjectId\n  title     String\n  content   String?\n  published Boolean   @default(false)\n  authorId  String    @db.ObjectId\n  author    User      @relation(fields: [authorId], references: [id])\n  comments  Comment[]\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n}\n\nmodel Comment {\n  id        String   @id @default(auto()) @map(\"_id\") @db.ObjectId\n  content   String\n  postId    String   @db.ObjectId\n  post      Post     @relation(fields: [postId], references: [id])\n  authorId  String   @db.ObjectId\n  author    User     @relation(fields: [authorId], references: [id])\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\n// model User {\n//   id        String   @id @default(uuid()) @db.Uuid\n//   email     String   @unique\n//   name      String?\n//   posts     Post[]\n//   comments  Comment[]\n//   createdAt DateTime @default(now())\n//   updatedAt DateTime @updatedAt\n// }\n\n// model Post {\n//   id        String   @id @default(uuid()) @db.Uuid\n//   title     String\n//   content   String?\n//   published Boolean  @default(false)\n//   authorId  String   @db.Uuid\n//   author    User     @relation(fields: [authorId], references: [id])\n//   comments  Comment[]\n//   createdAt DateTime @default(now())\n//   updatedAt DateTime @updatedAt\n// }\n\n// model Comment {\n//   id        String   @id @default(uuid()) @db.Uuid\n//   content   String\n//   postId    String   @db.Uuid\n//   post      Post     @relation(fields: [postId], references: [id])\n//   authorId  String   @db.Uuid\n//   author    User     @relation(fields: [authorId], references: [id])\n//   createdAt DateTime @default(now())\n//   updatedAt DateTime @updatedAt\n// }\n",
+  "inlineSchemaHash": "8431e7d76925624a0765dcd752579031a7d0b15bc30f16b7f32e63ef2c7d793a",
+  "copyEngine": false
 }
 config.dirname = '/'
 
